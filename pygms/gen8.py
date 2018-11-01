@@ -2,7 +2,8 @@ import datetime
 import uuid
 
 class gen8:
-    def __init__(self, data = None):
+    def __init__(self, form, data = None):
+        self.form = form
         self.values = {}
         if data:
             self.load(data)

@@ -1,5 +1,7 @@
 from .strg import strg
 from .gen8 import gen8
+from .bgnd import bgnd
+from .optn import optn
 
 class form:
     def __init__(self, data = None):
@@ -24,9 +26,13 @@ class form:
             size = data.readUInt32()
             dataend = data.offset + size
             if magic == "STRG": #Strings
-                self.strg = strg(data)
-            if magic == "GEN8": #Generator
-                self.gen8 = gen8(data)
+                self.strg = strg(form, data)
+            elif magic == "GEN8" or magic == "GEN7": #Generator, GEN7 is forward compatible with GEN8
+                self.gen8 = gen8(form, data)
+            elif magic == "OPTN": #Options
+                self.optn = optn(form, data)
+            elif magic == "BGND": #Background info
+                self.bgnd = bgnd(form, data)
             else:
                 print("Unknown chunk [{}]".format(magic))
             data.seek(dataend)
