@@ -6,8 +6,6 @@ class gen8:
         self.values = {}
         if data:
             self.load(data)
-        
-        #print(self.values)
     
     OPTION_FULLSCREEN = 1
     OPTION_INTERPOLATE_PIXELS = 8
