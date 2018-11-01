@@ -1,4 +1,5 @@
 from .strg import strg
+from .gen8 import gen8
 
 class form:
     def __init__(self, data = None):
@@ -22,8 +23,11 @@ class form:
             magic = data.readString(4)
             size = data.readUInt32()
             dataend = data.offset + size
-            if magic == "STRG": #STRG
+            if magic == "STRG": #Strings
                 self.strg = strg(data)
+            if magic == "GEN8": #Generator
+                self.gen8 = gen8(data)
+                print(self.gen8.values)
             else:
                 print("Unknown chunk [{}]".format(magic))
             data.seek(dataend)

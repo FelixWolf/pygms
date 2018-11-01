@@ -4,6 +4,7 @@ import struct
 class bytestream:
     def __init__(self, data, byteorder = "big"):
         self.data = data
+        self.offsets = []
         self.offset = 0
         if byteorder == "big" or byteorder == ">":
             self.byteorder = ">"
@@ -11,6 +12,16 @@ class bytestream:
             self.byteorder = "<"
         else:
             raise ValueError("byteorder must be either 'big' or 'little'")
+    
+    def push(self, offset):
+        self.offsets.append(self.offset)
+        self.offset=offset
+    
+    def pop(self):
+        if len(self.offsets) > 0:
+            self.offset = self.offsets.pop()
+        else:
+            raise IndexError("Unable to pop from empty offset stack")
     
     SEEK_SET = 0
     SEEK_CUR = 1
