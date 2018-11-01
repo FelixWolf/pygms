@@ -27,7 +27,6 @@ class form:
                 self.strg = strg(data)
             if magic == "GEN8": #Generator
                 self.gen8 = gen8(data)
-                print(self.gen8.values)
             else:
                 print("Unknown chunk [{}]".format(magic))
             data.seek(dataend)
