@@ -2,6 +2,9 @@ from .strg import strg
 from .gen8 import gen8
 from .bgnd import bgnd
 from .optn import optn
+from .path import path
+from .audo import audo
+from .code import code
 
 class form:
     def __init__(self, data = None):
@@ -25,12 +28,18 @@ class form:
             magic = data.readString(4)
             size = data.readUInt32()
             dataend = data.offset + size
-            if magic == "STRG": #Strings
-                self.strg = strg(form, data)
-            elif magic == "GEN8" or magic == "GEN7": #Generator, GEN7 is forward compatible with GEN8
+            if magic == "GEN8" or magic == "GEN7": #Generator, GEN7 is forward compatible with GEN8
                 self.gen8 = gen8(form, data)
+            elif magic == "STRG": #Strings
+                self.strg = strg(form, data)
             elif magic == "OPTN": #Options
                 self.optn = optn(form, data)
+            elif magic == "PATH": #Paths
+                self.path = path(form, data)
+            elif magic == "AUDO": #Audio
+                self.audo = audo(form, data)
+            elif magic == "CODE": #Bytecode
+                self.code = code(form, data)
             elif magic == "BGND": #Background info
                 self.bgnd = bgnd(form, data)
             else:

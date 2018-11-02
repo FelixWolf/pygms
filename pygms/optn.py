@@ -68,6 +68,9 @@ class optn:
         else:
             raise ValueError("Expected 2, got not 2!")
     
+    def __dir__(self):
+        return self.values.keys()
+    
     def __getitem__(self, index):
         return self.values[index]
     
