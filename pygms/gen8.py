@@ -1,5 +1,6 @@
 import datetime
 import uuid
+import math
 
 class gen8:
     def __init__(self, form, data = None):
@@ -22,7 +23,7 @@ class gen8:
     OPTION_YOYOPLAYER = 4096
     OPTION_SAVE_LOCATION = 8192
     OPTION_BORDERLESS = 16384
-    OPTION_UNKNOWN_CODE_TYPE = 32768
+    OPTION_CODE_IS_JAVASCRIPT = 32768
     OPTION_OVERRIDE_HOBBY_SPLASH = 65536
     
     def load(self, data):
@@ -79,14 +80,15 @@ class gen8:
             "SaveLocation": self.values["Options"]&gen8.OPTION_SAVE_LOCATION == gen8.OPTION_SAVE_LOCATION,
             "Borderless": self.values["Options"]&gen8.OPTION_BORDERLESS == gen8.OPTION_BORDERLESS,
             "OverrideHobbySplash": self.values["Options"]&gen8.OPTION_OVERRIDE_HOBBY_SPLASH == gen8.OPTION_OVERRIDE_HOBBY_SPLASH,
-            "Unknown_CodeType": self.values["Options"]&gen8.OPTION_UNKNOWN_CODE_TYPE == gen8.OPTION_UNKNOWN_CODE_TYPE,
+            "IsJavascript": self.values["Options"]&gen8.OPTION_CODE_IS_JAVASCRIPT == gen8.OPTION_CODE_IS_JAVASCRIPT,
         }
         
         self.values["LicenseCRC"] = data.readUInt32()
         
         self.values["LicenceMD5"] = "".join(["{:0>2x}".format(i) for i in data.readBytes(16)])
         
-        self.values["BuildTime"] = datetime.datetime.utcfromtimestamp(data.readUInt64())
+        buildTime = data.readUInt64()
+        self.values["BuildTime"] = datetime.datetime.utcfromtimestamp(buildTime)
         
         data.push(data.readUInt32()-4)
         length = data.readUInt32()
@@ -102,14 +104,44 @@ class gen8:
         self.values["DebuggerPort"] = data.readUInt32()
         
         self.values["RoomOrder"] = []
-        for i in range(data.readUInt32()):
+        roomCount = data.readUInt32()
+        for i in range(roomCount):
             self.values["RoomOrder"].append(data.readUInt32())
         
         if self.values["MajorVersion"] >= 2:
-            #Signature stuff, probably unimportant, might implement later
-            #Double RandSeed
-            #Double[4] Game Signature (???)
-            data.seek(40, data.SEEK_CUR)
+            #For some reason, the next UInt64 is a random bytes.
+            #The seed can be predicted as: buildTime & 0xFFFFFFFF
+            #The algorithm is C#'s modified "Donald E. Knuth's subtractive random number generator"
+            #Assuming "random()" pulls from the seeded value returning a 32-bit integer,
+            #it can be predicted as:
+            #a = random() << 32 | random()
+            randomBytes = [data.readUInt64()]
+            
+            #Then 4 values to unpack, it can be either:
+            #UInt64 - A weird value made from a bunch of XOR, AND, and Bitshifting.
+            #2 sets of UInt32 - Based off the seeded random value.
+            #We can figure out which of these is the weird value with this algorithm:
+            weirdFinder = math.floor(abs(((buildTime & 0xFFFF) / 7 + (self.values["GameID"] - self.values["Width"]) + roomCount) % 4))
+            
+            weirdValue = None
+            for i in range(0, 4):
+                if i == weirdFinder:
+                    weirdValue = data.readUInt64()
+                else:
+                    #Technically, this is two UInt32s, but judging by the first
+                    #random value that is unpacked, we can just use readUInt64()
+                    #We normally would do UInt32 << 32 | UInt32
+                    #But I am lazy, and I don't think affect gameplay.
+                    randomBytes.append(data.readUInt64())
+            
+            #Do we need what is above? What does it even do? I'll just store it
+            #in a weird container:
+            self.values["Weird"] = {
+                "WeirdValue": weirdValue,
+                "Random": randomBytes,
+                "Seed": buildTime & 0xFFFFFFFF,
+                "Index": weirdFinder
+            }
             
             #Return to normal activities. This still requires MajorVersion >= 2
             self.values["GameSpeed"] = data.readFloat() #In FPS
@@ -117,7 +149,6 @@ class gen8:
             
             self.values["GameGUID"] = uuid.UUID(bytes=data.readBytes(16))
             
-        
     def __dir__(self):
         return dir(self.values)
     

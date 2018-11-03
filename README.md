@@ -20,7 +20,7 @@ STRG  | Full    |
 AUDO  | Full    | Does not decode files, only stores them in memory.
 PATH  | Impl    | Base exists as well as format, but no data to test on.
 BGRN  | Full    |
-CODE  | Full    | Does not parse code, see `bytecode.py`
+CODE  | Full    | Does not parse code, see `bytecode.py`.
 OPTN  | Full    |
 LANG  | None    | To be added.
 EXTN  | None    | To be added.
