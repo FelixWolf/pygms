@@ -5,6 +5,7 @@ from .optn import optn
 from .path import path
 from .audo import audo
 from .code import code
+from .lang import lang
 
 class form:
     def __init__(self, data = None):
@@ -42,6 +43,8 @@ class form:
                 self.code = code(form, data)
             elif magic == "BGND": #Background info
                 self.bgnd = bgnd(form, data)
+            elif magic == "LANG": #Language info probably
+                self.lang = lang(form, data)
             else:
                 print("Unknown chunk [{}]".format(magic))
             data.seek(dataend)

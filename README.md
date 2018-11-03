@@ -22,7 +22,7 @@ PATH  | Impl    | Base exists as well as format, but no data to test on.
 BGRN  | Full    |
 CODE  | Full    | Does not parse code, see `bytecode.py`.
 OPTN  | Full    |
-LANG  | None    | To be added.
+LANG  | Part (?)| Untested, boiler plate exists.
 EXTN  | None    | To be added.
 SOND  | None    | To be added.
 AGRP  | None    | To be added.
