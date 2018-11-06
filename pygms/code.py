@@ -25,7 +25,6 @@ class code:
             
             data.pop()
             #/code
-        exit()
     
     def __dir__(self):
         return self.values.keys()

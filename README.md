@@ -24,9 +24,9 @@ CODE  | Full    | Does not parse code, see `bytecode.py`.
 OPTN  | Full    |
 LANG  | Part (?)| Untested, boiler plate exists.
 EXTN  | None    | To be added.
-SOND  | None    | To be added.
+SOND  | Full    |
 AGRP  | None    | To be added.
-SPRT  | None    | To be added.
+SPRT  | Full    |
 SCPT  | None    | To be added.
 GLOB  | None    | To be added.
 SHDR  | None    | To be added.
@@ -36,7 +36,7 @@ OBJT  | None    | To be added.
 ROOM  | None    | To be added.
 DAFL  | None    | To be added.
 EMBI  | None    | To be added.
-TPAG  | None    | To be added.
+TPAG  | Full    |
 
 Disclaimer
 ----------

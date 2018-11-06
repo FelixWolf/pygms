@@ -6,6 +6,9 @@ from .path import path
 from .audo import audo
 from .code import code
 from .lang import lang
+from .sprt import sprt
+from .sond import sond
+from .tpag import tpag
 
 class form:
     def __init__(self, data = None):
@@ -39,12 +42,19 @@ class form:
                 self.path = path(form, data)
             elif magic == "AUDO": #Audio
                 self.audo = audo(form, data)
+            elif magic == "SOND": #Sound
+                self.sond = sond(form, data)
             elif magic == "CODE": #Bytecode
                 self.code = code(form, data)
             elif magic == "BGND": #Background info
                 self.bgnd = bgnd(form, data)
             elif magic == "LANG": #Language info probably
                 self.lang = lang(form, data)
+            elif magic == "SPRT": #Sprite data
+                self.sprt = sprt(form, data)
+            elif magic == "TPAG": #Texture page
+                self.tpag = tpag(form, data)
             else:
                 print("Unknown chunk [{}]".format(magic))
             data.seek(dataend)
+        exit()
