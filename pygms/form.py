@@ -9,6 +9,7 @@ from .lang import lang
 from .sprt import sprt
 from .sond import sond
 from .tpag import tpag
+from .objt import objt
 
 class form:
     def __init__(self, data = None):
@@ -54,6 +55,8 @@ class form:
                 self.sprt = sprt(form, data)
             elif magic == "TPAG": #Texture page
                 self.tpag = tpag(form, data)
+            elif magic == "OBJT": #Object
+                self.objt = objt(form, data)
             else:
                 print("Unknown chunk [{}]".format(magic))
             data.seek(dataend)

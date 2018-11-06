@@ -32,7 +32,7 @@ GLOB  | None    | To be added.
 SHDR  | None    | To be added.
 FONT  | None    | To be added.
 TMLN  | None    | To be added.
-OBJT  | None    | To be added.
+OBJT  | Full    |
 ROOM  | None    | To be added.
 DAFL  | None    | To be added.
 EMBI  | None    | To be added.

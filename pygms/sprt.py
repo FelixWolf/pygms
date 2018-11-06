@@ -89,6 +89,7 @@ class sprt:
                     #Spine data
                     entry.spineData = data.readBytes(data.readUInt32())
             
+            self.values[name] = entry
             #/sprt
             data.pop()
         
