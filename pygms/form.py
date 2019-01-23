@@ -10,6 +10,7 @@ from .sprt import sprt
 from .sond import sond
 from .tpag import tpag
 from .objt import objt
+from .txtr import txtr
 
 class form:
     def __init__(self, data = None):
@@ -57,7 +58,8 @@ class form:
                 self.tpag = tpag(form, data)
             elif magic == "OBJT": #Object
                 self.objt = objt(form, data)
+            elif magic == "TXTR": #Object
+                self.txtr = txtr(form, data)
             else:
                 print("Unknown chunk [{}]".format(magic))
             data.seek(dataend)
-        exit()

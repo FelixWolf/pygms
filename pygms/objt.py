@@ -52,6 +52,9 @@ class objt:
     def __dir__(self):
         return self.values.keys()
     
+    def __contains__(self, key):
+        return key in self.values
+    
     def __getitem__(self, index):
         return self.values[index]
     
