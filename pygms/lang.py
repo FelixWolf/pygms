@@ -11,27 +11,15 @@ class lang:
             languageEntryCount = data.readUInt32()
             if languageCount > 0:
                 for i in range(languageEntryCount):
-                    data.push(data.readUInt32()-4)
-                    length = data.readUInt32()
-                    languageID = data.readString(length)
-                    data.pop()
+                    languageID = data.readGMSString()
                 
                 for i in range(languageCount):
-                    data.push(data.readUInt32()-4)
-                    length = data.readUInt32()
-                    language = data.readString(length)
-                    data.pop()
+                    language = data.readGMSString()
                     
-                    data.push(data.readUInt32()-4)
-                    length = data.readUInt32()
-                    region = data.readString(length)
-                    data.pop()
+                    region = data.readGMSString()
                     
                     for ii in range(languageEntryCount):
-                        data.push(data.readUInt32()-4)
-                        length = data.readUInt32()
-                        languageString = data.readString(length)
-                        data.pop()
+                        languageString = data.readGMSString()
         
         else:
             raise ValueError("Expected 1, got not 1!")

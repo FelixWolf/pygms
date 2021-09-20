@@ -13,10 +13,7 @@ class sprt:
             #sprt
             data.push(data.readUInt32())
             
-            data.push(data.readUInt32()-4)
-            length = data.readUInt32()
-            name = data.readString(length)
-            data.pop()
+            name = data.readGMSString()
             
             entry.width = data.readUInt32()
             entry.height = data.readUInt32()
@@ -41,45 +38,43 @@ class sprt:
             spriteCount = data.readInt32()
             if spriteCount >= 0:
                 #Old sprite format
-                spriteCount = data.readUInt32()
                 entry.texturePages = []
-                for i in range(spriteCount):
+                for i in range(data.readUInt32()):
                     offset = data.readUInt32()
                     if offset != 0:
                         entry.texturePages.append(offset)
                 
-                maskCount = data.readUInt32()
                 entry.textureMasks = []
-                for i in range(maskCount):
+                for i in range(data.readUInt32()):
                     entry.textureMasks.append(data.readBytes(entry.width*entry.height))
                 
                 pass
             else:
-                dummy = data.readUInt32() # Should always be 1
+                version = data.readUInt32()
                 entry.spriteType = data.readUInt32()
                 entry.playbackSpeed = data.readFloat()
                 entry.playbackType = data.readUInt32()
-                
+                if version >= 2:
+                    sequences = data.readUInt32()
+                    if version >= 3:
+                        slices = data.readUInt32()
                 if entry.spriteType == 0:
                     #Basic sprite format
-                    spriteCount = data.readUInt32()
                     entry.texturePages = []
-                    for i in range(spriteCount):
+                    for i in range(data.readUInt32()):
                         offset = data.readUInt32()
                         if offset != 0:
                             entry.texturePages.append(offset)
                     
-                    maskCount = data.readUInt32()
                     entry.textureMasks = []
-                    for i in range(maskCount):
+                    for i in range(data.readUInt32()):
                         entry.textureMasks.append(data.readBytes(entry.width*entry.height))
                     
                 elif entry.spriteType == 1:
                     #SWF sprite
                     dummy = data.readUInt32() # Should always be 8
-                    spriteCount = data.readUInt32()
                     entry.texturePages = []
-                    for i in range(spriteCount):
+                    for i in range(data.readUInt32()):
                         entry.texturePages.append(data.readUInt32())
                         
                     dummy = data.readUInt32() #Should always be 4

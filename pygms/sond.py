@@ -12,22 +12,13 @@ class sond:
             entry = kvp()
             data.push(data.readUInt32())
             
-            data.push(data.readUInt32()-4)
-            length = data.readUInt32()
-            name = data.readString(length)
-            data.pop()
+            name = data.readGMSString()
             
             entry.kind = data.readUInt32()
             
-            data.push(data.readUInt32()-4)
-            length = data.readUInt32()
-            entry.extension = data.readString(length)
-            data.pop()
+            entry.extension = data.readGMSString()
             
-            data.push(data.readUInt32()-4)
-            length = data.readUInt32()
-            entry.filename = data.readString(length)
-            data.pop()
+            entry.filename = data.readGMSString()
             
             entry.effects = data.readUInt32()
             

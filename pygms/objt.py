@@ -13,10 +13,7 @@ class objt:
             #objt
             data.push(data.readUInt32())
             
-            data.push(data.readUInt32()-4)
-            length = data.readUInt32()
-            name = data.readString(length)
-            data.pop()
+            name = data.readGMSString()
             
             entry.sprite = data.readInt32()
             if entry.sprite == -1:

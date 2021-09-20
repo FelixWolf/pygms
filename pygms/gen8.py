@@ -29,15 +29,9 @@ class gen8:
     def load(self, data):
         self.values["Debug"] = data.readUInt32() & 1
         
-        data.push(data.readUInt32()-4)
-        length = data.readUInt32()
-        self.values["FileName"] = data.readString(length)
-        data.pop()
+        self.values["FileName"] = data.readGMSString()
         
-        data.push(data.readUInt32()-4)
-        length = data.readUInt32()
-        self.values["Config"] = data.readString(length)
-        data.pop()
+        self.values["Config"] = data.readGMSString()
         
         self.values["RoomMaxId"] = data.readUInt32()
         
@@ -50,10 +44,7 @@ class gen8:
         dummy = data.readUInt32()
         dummy = data.readUInt32()
         
-        data.push(data.readUInt32()-4)
-        length = data.readUInt32()
-        self.values["GameName"] = data.readString(length)
-        data.pop()
+        self.values["GameName"] = data.readGMSString()
         
         self.values["MajorVersion"] = data.readUInt32()
         self.values["MinorVersion"] = data.readUInt32()
@@ -90,10 +81,7 @@ class gen8:
         buildTime = data.readUInt64()
         self.values["BuildTime"] = datetime.datetime.utcfromtimestamp(buildTime)
         
-        data.push(data.readUInt32()-4)
-        length = data.readUInt32()
-        self.values["DisplayName"] = data.readString(length)
-        data.pop()
+        self.values["DisplayName"] = data.readGMSString()
         
         self.values["ActiveTargets"] = ((data.readUInt32() << 32) | data.readUInt32())
         

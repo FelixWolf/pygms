@@ -11,10 +11,7 @@ class code:
             data.push(data.readUInt32())
             
             #name
-            data.push(data.readUInt32()-4)
-            length = data.readUInt32()
-            name = data.readString(length)
-            data.pop()
+            name = data.readGMSString()
             #/name
             
             #value

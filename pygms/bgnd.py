@@ -15,15 +15,12 @@ class bgnd:
             data.push(data.readUInt32())
             
             #name
-            data.push(data.readUInt32()-4)
-            length = data.readUInt32()
-            kvp.name = data.readString(length)
-            data.pop()
+            entry.name = data.readGMSString()
             
-            kvp.transparent = data.readUInt32() == 1
-            kvp.smooth = data.readUInt32() == 1
-            kvp.preload = data.readUInt32() == 1
-            kvp.texture = data.readUInt32()
+            entry.transparent = data.readUInt32() == 1
+            entry.smooth = data.readUInt32() == 1
+            entry.preload = data.readUInt32() == 1
+            entry.texture = data.readUInt32()
             #/bgnd
             data.pop()
     

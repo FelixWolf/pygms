@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import struct
 
-class bytestream:
+class ByteStream:
     def __init__(self, data, byteorder = "big"):
         self.data = data
         self.offsets = []
@@ -16,22 +16,26 @@ class bytestream:
     def push(self, offset):
         self.offsets.append(self.offset)
         self.offset=offset
+        return len(self.offsets)
     
-    def pop(self):
-        if len(self.offsets) > 0:
-            self.offset = self.offsets.pop()
-        else:
-            raise IndexError("Unable to pop from empty offset stack")
+    def pop(self, i = None):
+        if i == None:
+            i = len(self.offsets) - 1
+        while len(self.offsets) > i:
+            if len(self.offsets) > 0:
+                self.offset = self.offsets.pop()
+            else:
+                raise IndexError("Unable to pop from empty offset stack")
     
     SEEK_SET = 0
     SEEK_CUR = 1
     SEEK_END = 2
     def seek(self, offset, direction = SEEK_SET):
-        if direction == bytestream.SEEK_SET:
+        if direction == self.SEEK_SET:
             self.offset = offset
-        elif direction == bytestream.SEEK_CUR:
+        elif direction == self.SEEK_CUR:
             self.offset += offset
-        elif direction == bytestream.SEEK_END:
+        elif direction == self.SEEK_END:
             self.offset = len(self.data) + offset
         else:
             raise ValueError("Unsupported seek operation!")
@@ -40,7 +44,7 @@ class bytestream:
         return len(self.data)
     
     def __repr__(self):
-        return "<bytestream {} @ {}>".format(len(self), self.offset)
+        return "<{} {} @ {}>".format(self.__name__, len(self), self.offset)
     
     def __bytes__(self):
         return self.data
@@ -138,7 +142,7 @@ class bytestream:
     def readStream(self, size, byteorder = None):
         self.canRead(size, True)
         
-        result = bytestream(self.data[self.offset:self.offset+size], byteorder = byteorder or self.byteorder)
+        result = type(self)(self.data[self.offset:self.offset+size], byteorder = byteorder or self.byteorder)
         self.offset += size
         return result
     

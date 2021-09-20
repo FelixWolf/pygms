@@ -53,15 +53,9 @@ class optn:
             self.values["LoadAlpha"] = data.readUInt32()
             
             for i in range(data.readUInt32()):
-                data.push(data.readUInt32()-4)
-                length = data.readUInt32()
-                key = data.readString(length)
-                data.pop()
+                key = data.readGMSString()
                 
-                data.push(data.readUInt32()-4)
-                length = data.readUInt32()
-                value = data.readString(length)
-                data.pop()
+                value = data.readGMSString()
                 if key!="" and value!="":
                     self.values[key] = value
 
